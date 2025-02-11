@@ -50,10 +50,14 @@ to this \texttt{.Rnw} file.\\
 \textbf{Solution:} \\
 Given that the certain property that all the numbers share is that they are all products of unique prime numbers, the first task at hand should be finding all possible prime numbers in the given range, which is all integers smaller than 100. \\
 
-A prime number is any number whose factors are only itself and $1$. The nested for loop begins by finding the factors for each number between $1$ and $100$, by using modular division. A number \texttt{x} is a factor of a number \texttt{y} if \verb|x %% y == 0|.\\
+A prime number is any number whose factors are only itself and $1$. The nested for loop begins by finding the factors for each number between $1$ and $100$, by using modular division. A number \texttt{x} is a factor of a number \texttt{y} if \verb|x %% y == 0|. \\
 
-All prime numbers will either only have one (for the number $1$) or two factors (all other prime numbers). This property is used to filter out all prime numbers using \verb|length(all.factors) <= 2|. I added \verb|!i %in% all.primes| to catch any duplicates.
+All prime numbers will either only have one (for the number $1$) or two factors (all other prime numbers). This property is used to filter out all prime numbers using \verb|length(all.factors) <= 2|. I added \verb|!i %in% all.primes| to catch any duplicates. \\
 
+The property that all the numbers in Blake's list share is that they are products of unique prime numbers, specifically numbers less than $100$. The nested for loop first begins by calculating all possible prime products. By using \verb|all.primes[k] != all.primes[k]| and \verb|prime.product < 100|. I used \verb|setdiff()| to eliminate all duplicates and other nonunique prime products, including prime products of the form $1*$ a prime number. \\
+
+After this, we can use \verb|setdiff()| to compare the actual set of unique prime products to Blake's list. \verb|setdiff(sample.nums, prime.products)| find the elements in \texttt{sample.nums} not found in \texttt{prime.products}. Flipping the order of the parameters does the same process in reverse, finding elements of \texttt{prime.products} not in \texttt{sample.nums}. This gives us the answers to which number in Blake's list is wrong, and which number should be included in his list, respectively. 
+\newpage
 <<size="scriptsize", warning=F, message=F>>=
 # information from problem
 all.nums = 1:100
@@ -74,6 +78,22 @@ for (i in 1:length(all.nums)){
     all.primes = c(all.primes, i)
   }
 }
+# finding all unique prime products under 100 
+prime.products = c()
+for (k in 1:length(all.primes)){
+  for(l in 1:length(all.primes)){
+    prime.product = all.primes[k] * all.primes[l]
+    if (all.primes[k] != all.primes[l] 
+        & prime.product < 100){
+      prime.products = setdiff(c(prime.products, prime.product), all.primes)
+    }
+  }
+}
+# code to find which number is out of place 
+setdiff(sample.nums, prime.products)
+# code to find which number should be in
+# of 75
+setdiff(prime.products, sample.nums)
 @
 \end{enumerate}
 
