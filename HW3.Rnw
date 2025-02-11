@@ -47,11 +47,33 @@ Blake made.\\
 to this \texttt{.Rnw} file.\\
 \textbf{Hint:} You may find the \verb|%in%| operator and the \verb|setdiff()| function to be helpful.\\
 
-\textbf{Solution:} 
-% Write your answer and explanations here.
+\textbf{Solution:} \\
+Given that the certain property that all the numbers share is that they are all products of unique prime numbers, the first task at hand should be finding all possible prime numbers in the given range, which is all integers smaller than 100. \\
+
+A prime number is any number whose factors are only itself and $1$. The nested for loop begins by finding the factors for each number between $1$ and $100$, by using modular division. A number \texttt{x} is a factor of a number \texttt{y} if \verb|x %% y == 0|.\\
+
+All prime numbers will either only have one (for the number $1$) or two factors (all other prime numbers). This property is used to filter out all prime numbers using \verb|length(all.factors) <= 2|. I added \verb|!i %in% all.primes| to catch any duplicates.
 
 <<size="scriptsize", warning=F, message=F>>=
-# Copy your solution code here.
+# information from problem
+all.nums = 1:100
+sample.nums = c(6, 10, 14, 15, 21, 22, 26, 33, 
+                34, 35, 38, 39, 46, 51, 55, 57, 
+                58, 62, 65, 69, 75, 77, 82, 85, 
+                86, 87, 91, 93, 94, 95)
+# finding all primes between 1 and 100
+all.primes = c()
+for (i in 1:length(all.nums)){
+  all.factors = c()
+  for (j in 1:i){
+    if (i %% j == 0){
+     all.factors = c(all.factors, j) 
+    }
+  }
+  if (length(all.factors) <= 2 & !i %in% all.primes){
+    all.primes = c(all.primes, i)
+  }
+}
 @
 \end{enumerate}
 
